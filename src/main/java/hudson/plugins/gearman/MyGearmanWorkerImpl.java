@@ -153,7 +153,7 @@ public class MyGearmanWorkerImpl implements GearmanSessionEventHandler {
     }
 
     public void reconnect() {
-        LOG.info("---- Worker " + this + " starting reconnect for " + session.toString());
+        LOG.debug("---- Worker " + this + " starting reconnect for " + session.toString());
         // In case we held the availability lock earlier, release it.
         availability.unlock(this);
         try {
@@ -178,7 +178,7 @@ public class MyGearmanWorkerImpl implements GearmanSessionEventHandler {
                 return;
             }
         }
-        LOG.info("---- Worker " + this + " ending reconnect for " + session.toString());
+        LOG.debug("---- Worker " + this + " ending reconnect for " + session.toString());
     }
 
     public MyGearmanWorkerImpl(AvailabilityMonitor availability) {
@@ -208,7 +208,7 @@ public class MyGearmanWorkerImpl implements GearmanSessionEventHandler {
     }
 
     public void setFunctions(Set<GearmanFunctionFactory> functions) {
-        LOG.info("---- Worker " + this + " registering " + functions.size() + " functions");
+        LOG.debug("---- Worker " + this + " registering " + functions.size() + " functions");
         functionRegistry.setFunctions(functions);
         ioAvailable.wakeup();
     }
@@ -317,7 +317,7 @@ public class MyGearmanWorkerImpl implements GearmanSessionEventHandler {
     public void work() {
         GearmanSessionEvent event = null;
         GearmanFunction function = null;
-        LOG.info("---- Worker " + this + " starting work");
+        LOG.debug("---- Worker " + this + " starting work");
 
         if (!state.equals(State.IDLE)) {
             throw new IllegalStateException("Can not call work while worker " +
@@ -360,7 +360,7 @@ public class MyGearmanWorkerImpl implements GearmanSessionEventHandler {
             // For the time being we will execute the jobs synchronously
             // in the future, I expect to change this.
             if (function != null) {
-                LOG.info("---- Worker " + this + " executing function");
+                LOG.debug("---- Worker " + this + " executing function");
                 submitFunction(function);
                 // Send another grab_job on the next loop
                 enqueueNoopEvent();
@@ -445,11 +445,11 @@ public class MyGearmanWorkerImpl implements GearmanSessionEventHandler {
             switch (t) {
                 case JOB_ASSIGN:
                     //TODO Figure out what the right behavior is if JobUUIDRequired was false when we submitted but is now true
-                    LOG.info("---- Worker " + this + " received job assignment");
+                    LOG.debug("---- Worker " + this + " received job assignment");
                     return addNewJob(event);
                 case JOB_ASSIGN_UNIQ:
                     //TODO Figure out what the right behavior is if JobUUIDRequired was true when we submitted but is now false
-                    LOG.info("---- Worker " + this + " received unique job assignment");
+                    LOG.debug("---- Worker " + this + " received unique job assignment");
                     return addNewJob(event);
                 case NOOP:
                     LOG.debug("---- Worker " + this + " sending grab job after wakeup");
@@ -505,7 +505,7 @@ public class MyGearmanWorkerImpl implements GearmanSessionEventHandler {
 
         reconnect();
 
-        LOG.debug("---- Worker " + this + " added server " + conn);
+        LOG.info("---- Worker " + this + " added server " + conn);
         return true;
     }
 
@@ -591,7 +591,7 @@ public class MyGearmanWorkerImpl implements GearmanSessionEventHandler {
             LOG.warn("---- Worker " + this + " encountered IOException while closing selector: ", ioe);
         }
         state = State.IDLE;
-        LOG.info("---- Worker " + this + " completed shutdown");
+        LOG.debug("---- Worker " + this + " completed shutdown");
 
         return exceptions;
     }

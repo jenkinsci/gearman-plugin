@@ -41,7 +41,7 @@ public class ComputerListenerImpl extends ComputerListener {
     public void onConfigurationChange() {
         // only fired on nodes configuration changes like a label or
         // name change. Not fired on state changes, like offline or online.
-        logger.info("---- " + ComputerListenerImpl.class.getName() + ":"
+        logger.debug("---- " + ComputerListenerImpl.class.getName() + ":"
                 + " onConfigurationChange");
 
         // update functions only when gearman-plugin is enabled
@@ -61,7 +61,7 @@ public class ComputerListenerImpl extends ComputerListener {
     public void onOffline(Computer c) {
         // gets called when existing slave dis-connects
         // gets called when slave is deleted.
-        logger.info("---- " + ComputerListenerImpl.class.getName() + ":"
+        logger.debug("---- " + ComputerListenerImpl.class.getName() + ":"
                 + " onOffline computer" + c);
 
         // update functions only when gearman-plugin is enabled
@@ -79,7 +79,7 @@ public class ComputerListenerImpl extends ComputerListener {
         // gets called when master goes into online state
         // gets called when existing slave re-connects
         // gets called when new slave goes into online state
-        logger.info("---- " + ComputerListenerImpl.class.getName() + ":"
+        logger.debug("---- " + ComputerListenerImpl.class.getName() + ":"
                 + " onOnline computer " + c);
 
         // update functions only when gearman-plugin is enabled
@@ -102,7 +102,7 @@ public class ComputerListenerImpl extends ComputerListener {
     @Override
     public void onTemporarilyOffline(Computer c, OfflineCause cause) {
         // fired when master or slave goes into temporary offline state
-        logger.info("---- " + ComputerListenerImpl.class.getName() + ":"
+        logger.debug("---- " + ComputerListenerImpl.class.getName() + ":"
                 + " onTemporarilyOffline computer " + c);
         // update functions only when gearman-plugin is enabled
         if (!GearmanPluginConfig.get().isEnablePlugin()) {
@@ -116,7 +116,7 @@ public class ComputerListenerImpl extends ComputerListener {
     @Override
     public void onTemporarilyOnline(Computer c) {
         // fired when master or slave goes into temporary online state
-        logger.info("---- " + ComputerListenerImpl.class.getName() + ":"
+        logger.debug("---- " + ComputerListenerImpl.class.getName() + ":"
                 + " onTemporarilyOnline computer " + c);
         // update functions only when gearman-plugin is enabled
         if (!GearmanPluginConfig.get().isEnablePlugin()) {

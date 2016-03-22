@@ -216,7 +216,7 @@ public class StartJobWorker extends AbstractGearmanFunction {
                     logger.error("---- Worker " + this.worker + " has no " +
                                  "computer while trying to take node offline.");
                 } else {
-                    logger.info("---- Worker " + this.worker + " setting " +
+                    logger.debug("---- Worker " + this.worker + " setting " +
                                 "node offline.");
                     computer.setTemporarilyOffline(true,
                         new OfflineCause.ByCLI("Offline due to Gearman request"));

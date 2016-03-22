@@ -123,7 +123,7 @@ public class GearmanProxy {
         } catch (NullPointerException npe) {
             logger.info("---- Master is offline");
         } catch (Exception e) {
-            logger.error("Exception while finding master", e);
+            logger.warn("Exception while finding master", e);
         }
 
         if (masterNode != null) {
@@ -147,7 +147,7 @@ public class GearmanProxy {
             }
         }
 
-        logger.info("---- Num of executors running = " + getNumExecutors());
+        logger.debug("---- Num of executors running = " + getNumExecutors());
     }
 
     /*
@@ -171,7 +171,7 @@ public class GearmanProxy {
             gwt.start();
         }
 
-        logger.info("---- Num of executors running = " + getNumExecutors());
+        logger.debug("---- Num of executors running = " + getNumExecutors());
     }
 
     /*
@@ -183,7 +183,7 @@ public class GearmanProxy {
         synchronized(gewtHandles) {
             for (ExecutorWorkerThread t : gewtHandles) {
                 if (t.getComputer() == computer) {
-                    logger.info("---- Executor thread already running for " + computer.getName());
+                    logger.debug("---- Executor thread already running for " + computer.getName());
                     return;
                 }
             }
@@ -210,7 +210,7 @@ public class GearmanProxy {
             }
         }
 
-        logger.info("---- Num of executors running = " + getNumExecutors());
+        logger.debug("---- Num of executors running = " + getNumExecutors());
 
     }
 
@@ -239,7 +239,7 @@ public class GearmanProxy {
             wt.stop();
         }
 
-        logger.info("---- Num of executors running = " + getNumExecutors());
+        logger.debug("---- Num of executors running = " + getNumExecutors());
     }
 
     /*
@@ -270,7 +270,7 @@ public class GearmanProxy {
             t.stop();
         }
 
-        logger.info("---- Num of executors running = " + getNumExecutors());
+        logger.debug("---- Num of executors running = " + getNumExecutors());
     }
 
     /*

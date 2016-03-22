@@ -91,12 +91,12 @@ public class StopJobWorker extends AbstractGearmanFunction {
                 // abort the running jenkins build
                 if (!executor.isInterrupted()) {
                     executor.interrupt();
-                    logger.info("---- Aborting build : " +
+                    logger.debug("---- Aborting build : " +
                                 jobName + ": " + buildNumber);
                     jobResult = true;
                 }
             } else {
-                logger.info("---- Request to abourt non-building build : " +
+                logger.debug("---- Request to abort non-building build : " +
                             jobName + ": " + buildNumber);
             }
         } else {

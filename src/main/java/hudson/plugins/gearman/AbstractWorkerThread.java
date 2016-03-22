@@ -110,7 +110,7 @@ public abstract class AbstractWorkerThread implements Runnable {
      */
     public void registerJobs() {
 
-        logger.info("---- AbstractorWorker registerJobs function ----");
+        logger.debug("---- AbstractorWorker registerJobs function ----");
 
     }
 
@@ -134,8 +134,8 @@ public abstract class AbstractWorkerThread implements Runnable {
     public void stop() {
 
         logger.info("---- " + getName() + " Request to stop AWT: " + this);
-        logger.info("---- " + getName() + "   Thread: " + thread + " name: " + thread.getName());
-        logger.info("---- " + getName() + "   Worker: " + worker);
+        logger.debug("---- " + getName() + "   Thread: " + thread + " name: " + thread.getName());
+        logger.debug("---- " + getName() + "   Worker: " + worker);
         synchronized(this) {
             running = false;
             if (worker != null) {
@@ -143,11 +143,11 @@ public abstract class AbstractWorkerThread implements Runnable {
             }
         }
 
-        logger.info("---- " + getName() + "   Interrupting worker");
+        logger.debug("---- " + getName() + "   Interrupting worker");
         // Interrupt the thread so it unblocks any blocking call
         thread.interrupt();
 
-        logger.info("---- " + getName() + " Stop request done");
+        logger.debug("---- " + getName() + " Stop request done");
     }
 
     /*

@@ -53,6 +53,7 @@ public class GearmanPluginConfig extends GlobalConfiguration {
     private boolean enablePlugin; // config to enable and disable plugin
     private String host; // gearman server host
     private int port; // gearman server port
+    private boolean enableScheduling; // disable custom Gearman scheduling
 
     /**
      * Constructor.
@@ -99,6 +100,7 @@ public class GearmanPluginConfig extends GlobalConfiguration {
         enablePlugin = json.getBoolean("enablePlugin");
         host = json.getString("host");
         port = json.getInt("port");
+        enableScheduling = json.getBoolean("enableScheduling");
 
         if (!enablePlugin && prevEnablePlugin) {  // gearman-plugin goes from ON to OFF state
             GearmanProxy.getInstance().stopAll();
@@ -191,6 +193,10 @@ public class GearmanPluginConfig extends GlobalConfiguration {
         } else {
             return port;
         }
+    }
+
+    public boolean isEnableScheduling() {
+        return Objects.firstNonNull(enableScheduling, Constants.GEARMAN_DEFAULT_ENABLE_SCHEDULING);
     }
 
     /*

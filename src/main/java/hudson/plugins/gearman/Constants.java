@@ -28,6 +28,7 @@ public interface Constants {
     public static final boolean GEARMAN_DEFAULT_ENABLE_PLUGIN = false;
     public static final String GEARMAN_DEFAULT_TCP_HOST = "127.0.0.1";
     public static final int GEARMAN_DEFAULT_TCP_PORT = 4730;
+    public static final boolean GEARMAN_DEFAULT_ENABLE_SCHEDULING = false;
 
     public static final String PLUGIN_LOGGER_NAME = "hudson.plugins.gearman.logger";
 }

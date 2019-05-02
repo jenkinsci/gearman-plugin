@@ -41,7 +41,9 @@ public class QueueTaskDispatcherImpl extends QueueTaskDispatcher {
     public CauseOfBlockage canTake(Node node,
                                    Queue.BuildableItem item) {
         // update only when gearman-plugin is enabled
-        if (!GearmanPluginConfig.get().isEnablePlugin()) {
+        // and custom gearman scheduling is enabled
+        if (!GearmanPluginConfig.get().isEnablePlugin() ||
+            !GearmanPluginConfig.get().isEnableScheduling()) {
             return null;
         }
 

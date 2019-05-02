@@ -14,5 +14,9 @@
       description="Select to enable Gearman plugin, Unselect to disable">
       <f:checkbox checked="${descriptor.enablePlugin()}"/>
     </f:entry>
+    <f:entry title="Enable custom Gearman scheduling" field="enableScheduling"
+      description="Let gearman-plugin decide where and when to launch jobs (disable if you're using throttling plugin)">
+      <f:checkbox checked="${descriptor.enableScheduling()}"/>
+    </f:entry>
   </f:section>
 </j:jelly>

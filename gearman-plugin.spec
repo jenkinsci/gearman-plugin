@@ -1,8 +1,9 @@
 %global     plugin_name gearman-plugin
 Name:       jenkins-in-house-plugins-%{plugin_name}
 Version:    0.3.2
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    A jenkins in-house plugins %{plugin_name}.hpi
+Obsoletes:  jenkins-upstream-plugins-%{plugin_name} <= %{version}
 Requires:   jenkins
 Group:      Development/Libraries
 License:    BSD
@@ -33,7 +34,10 @@ mvn package
 %{_sharedstatedir}/juseppe/%{plugin_name}.hpi
 
 %changelog
-* Wed Apr 8 2020 +0700 tvhien <tranvanhien.engineer@gmail.com> - 0.3.2-2
+* Thu Apr 23 2020 +0700 Hien Tran <hien.tran@gooddata.com> - 0.3.2-3
+- CONFIG: SETI-4077 remove obsoletes package in spec file
+
+* Wed Apr 8 2020 +0700 Hien Tran <hien.tran@gooddata.com> - 0.3.2-2
 - CONFIG: SETI-4077 add gearman-plugin.spec and Makefile
 
 * Wed Mar 25 2020 +0700 Chien Minh Do <chien.do@gooddata.com> - 0.3.2-1

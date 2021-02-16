@@ -45,7 +45,7 @@ public class ComputerListenerImpl extends ComputerListener {
                 + " onConfigurationChange");
 
         // update functions only when gearman-plugin is enabled
-        if (!GearmanPluginConfig.get().enablePlugin()) {
+        if (!GearmanPluginConfig.get().isEnablePlugin()) {
             return;
         }
 
@@ -65,7 +65,7 @@ public class ComputerListenerImpl extends ComputerListener {
                 + " onOffline computer" + c);
 
         // update functions only when gearman-plugin is enabled
-        if (!GearmanPluginConfig.get().enablePlugin()) {
+        if (!GearmanPluginConfig.get().isEnablePlugin()) {
             return;
         }
 
@@ -83,7 +83,7 @@ public class ComputerListenerImpl extends ComputerListener {
                 + " onOnline computer " + c);
 
         // update functions only when gearman-plugin is enabled
-        if (!GearmanPluginConfig.get().enablePlugin()) {
+        if (!GearmanPluginConfig.get().isEnablePlugin()) {
             return;
         }
 
@@ -105,7 +105,7 @@ public class ComputerListenerImpl extends ComputerListener {
         logger.info("---- " + ComputerListenerImpl.class.getName() + ":"
                 + " onTemporarilyOffline computer " + c);
         // update functions only when gearman-plugin is enabled
-        if (!GearmanPluginConfig.get().enablePlugin()) {
+        if (!GearmanPluginConfig.get().isEnablePlugin()) {
             return;
         }
 
@@ -119,7 +119,7 @@ public class ComputerListenerImpl extends ComputerListener {
         logger.info("---- " + ComputerListenerImpl.class.getName() + ":"
                 + " onTemporarilyOnline computer " + c);
         // update functions only when gearman-plugin is enabled
-        if (!GearmanPluginConfig.get().enablePlugin()) {
+        if (!GearmanPluginConfig.get().isEnablePlugin()) {
             return;
         }
 

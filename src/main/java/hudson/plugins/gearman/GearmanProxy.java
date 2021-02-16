@@ -70,7 +70,7 @@ public class GearmanProxy {
         String hostname = Constants.GEARMAN_DEFAULT_EXECUTOR_NAME;
         // query Jenkins for master's name
         try {
-            master = Jenkins.getActiveInstance().getComputer("");
+            master = Jenkins.get().getComputer("");
             hostname = master.getHostName();
         } catch (Exception e) {
             logger.warn("Exception while getting hostname", e);
@@ -119,7 +119,7 @@ public class GearmanProxy {
         // first make sure master is enabled (or has executors)
         Node masterNode = null;
         try {
-            masterNode = Jenkins.getActiveInstance().getComputer("").getNode();
+            masterNode = Jenkins.get().getComputer("").getNode();
         } catch (NullPointerException npe) {
             logger.info("---- Master is offline");
         } catch (Exception e) {
@@ -136,7 +136,7 @@ public class GearmanProxy {
         /*
          * Spawn executors for the jenkins slaves
          */
-        List<Node> nodes = Jenkins.getActiveInstance().getNodes();
+        List<Node> nodes = Jenkins.getInstance().getNodes();
         if (!nodes.isEmpty()) {
             for (Node node : nodes) {
                 Computer computer = node.toComputer();

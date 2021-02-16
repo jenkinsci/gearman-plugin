@@ -26,25 +26,29 @@ import hudson.slaves.DumbSlave;
 
 import java.util.Set;
 
+import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.jvnet.hudson.test.HudsonTestCase;
+import org.jvnet.hudson.test.JenkinsRule;
+
+import static org.junit.Assert.*;
 
 /**
  * Test for the {@link ExecutorWorkerThread} class.
  *
  * @author Khai Do
  */
-public class ExecutorWorkerThreadTest extends HudsonTestCase {
+public class ExecutorWorkerThreadTest{
 
+    @Rule
+    public JenkinsRule j = new JenkinsRule();
     DumbSlave slave = null;
 
-    @Override
     @Before
     public void setUp() throws Exception {
-        super.setUp();
-        slave = createOnlineSlave(new LabelAtom("oneiric-10"));
+        slave = j.createOnlineSlave(new LabelAtom("oneiric-10"));
 
         // poll to make sure test slave is online before continuing
         long timeoutExpiredMs = System.currentTimeMillis() + 3000;
@@ -61,11 +65,9 @@ public class ExecutorWorkerThreadTest extends HudsonTestCase {
         slave.setLabelString("ubuntu gcc python-2.4 linux");
     }
 
-    @Override
     @After
     public void tearDown() throws Exception {
-        hudson.removeNode(slave);
-        super.tearDown();
+        j.getInstance().removeNode(slave);
     }
 
     /*
@@ -75,7 +77,7 @@ public class ExecutorWorkerThreadTest extends HudsonTestCase {
     @Test
     public void testRegisterJobs_ProjectSingleLabel() throws Exception {
 
-        Project<?, ?> lemon = createFreeStyleProject("lemon");
+        Project<?, ?> lemon = j.createFreeStyleProject("lemon");
         lemon.setAssignedLabel(new LabelAtom("linux"));
 
         AbstractWorkerThread oneiric = new ExecutorWorkerThread("GearmanServer", 4730, "MyWorker", slave.toComputer(), "master", new NoopAvailabilityMonitor());
@@ -96,7 +98,7 @@ public class ExecutorWorkerThreadTest extends HudsonTestCase {
     @Test
     public void testRegisterJobs_ProjectInvalidLabel() throws Exception {
 
-        Project<?, ?> lemon = createFreeStyleProject("lemon");
+        Project<?, ?> lemon = j.createFreeStyleProject("lemon");
         lemon.setAssignedLabel(new LabelAtom("bogus"));
 
         AbstractWorkerThread oneiric = new ExecutorWorkerThread("GearmanServer", 4730, "MyWorker", slave.toComputer(), "master", new NoopAvailabilityMonitor());
@@ -116,7 +118,7 @@ public class ExecutorWorkerThreadTest extends HudsonTestCase {
     @Test
     public void testRegisterJobs_ProjectNoLabel() throws Exception {
 
-        Project<?, ?> lemon = createFreeStyleProject("lemon");
+        Project<?, ?> lemon = j.createFreeStyleProject("lemon");
 
         AbstractWorkerThread oneiric = new ExecutorWorkerThread(
                                             "GearmanServer",
@@ -141,8 +143,8 @@ public class ExecutorWorkerThreadTest extends HudsonTestCase {
     @Test
     public void testRegisterJobs_ProjectNoLabel_Exclusive() throws Exception {
 
-        Project<?, ?> lemon = createFreeStyleProject("lemon");
-        DumbSlave exclusive_slave = createOnlineSlave(new LabelAtom("foo"));
+        Project<?, ?> lemon = j.createFreeStyleProject("lemon");
+        DumbSlave exclusive_slave = j.createOnlineSlave(new LabelAtom("foo"));
         exclusive_slave.setMode(Mode.EXCLUSIVE);
 
         AbstractWorkerThread oneiric = new ExecutorWorkerThread(
@@ -166,7 +168,7 @@ public class ExecutorWorkerThreadTest extends HudsonTestCase {
     @Test
     public void testRegisterJobs_ProjectDisabled() throws Exception {
 
-        Project<?, ?> lemon = createFreeStyleProject("lemon");
+        Project<?, ?> lemon = j.createFreeStyleProject("lemon");
         lemon.setAssignedLabel(new LabelAtom("linux"));
         lemon.disable();
 
@@ -186,10 +188,10 @@ public class ExecutorWorkerThreadTest extends HudsonTestCase {
     @Test
     public void testRegisterJobs_SlaveOffline() throws Exception {
 
-        DumbSlave offlineSlave = createSlave(new LabelAtom("oneiric-10"));
+        DumbSlave offlineSlave = j.createSlave(new LabelAtom("oneiric-10"));
         offlineSlave.setLabelString("ubuntu gcc python-2.4 linux");
 
-        Project<?, ?> lemon = createFreeStyleProject("lemon");
+        Project<?, ?> lemon = j.createFreeStyleProject("lemon");
         lemon.setAssignedLabel(new LabelAtom("linux"));
 
         AbstractWorkerThread oneiric = new ExecutorWorkerThread("GearmanServer", 4730, "MyWorker", offlineSlave.toComputer(), "master", new NoopAvailabilityMonitor());
@@ -208,7 +210,7 @@ public class ExecutorWorkerThreadTest extends HudsonTestCase {
     @Test
     public void testRegisterJobs_MavenProject() throws Exception {
 
-        MavenModuleSet lemon = createMavenProject("lemon");
+        MavenModuleSet lemon = j.createProject(MavenModuleSet.class, "lemon");
         lemon.setAssignedLabel(new LabelAtom("linux"));
 
         AbstractWorkerThread oneiric = new ExecutorWorkerThread("GearmanServer", 4730, "MyWorker", slave.toComputer(), "master", new NoopAvailabilityMonitor());
@@ -230,7 +232,7 @@ public class ExecutorWorkerThreadTest extends HudsonTestCase {
     public void testRegisterJobs_ProjectNotLabel() throws Exception {
 
 
-        Project<?, ?> lemon = createFreeStyleProject("lemon");
+        Project<?, ?> lemon = j.createFreeStyleProject("lemon");
         lemon.setAssignedLabel(new LabelAtom("!linux"));
 
         AbstractWorkerThread oneiric = new ExecutorWorkerThread("GearmanServer", 4730, "MyWorker", slave.toComputer(), "master", new NoopAvailabilityMonitor());
@@ -240,5 +242,26 @@ public class ExecutorWorkerThreadTest extends HudsonTestCase {
 
         assertEquals(0, functions.size());
     }
+
+    /*
+     * This test verifies that gearman functions are correctly registered for a
+     * workflow project. All workflow projects have are executed on master itself,
+     * so they have default assigned labels "master", {@link WorkflowJob#getAssignedLabel}
+     */
+    @Test
+    public void testRegisterJobs_WorkflowProject() throws Exception {
+
+        WorkflowJob lemon = j.createProject(WorkflowJob.class,"lemon");
+
+        AbstractWorkerThread oneiric = new ExecutorWorkerThread("GearmanServer", 4730, "MyWorker", j.jenkins.getComputer(""), "master", new NoopAvailabilityMonitor());
+        oneiric.testInitWorker();
+        oneiric.registerJobs();
+        Set<String> functions = oneiric.worker.getRegisteredFunctions();
+
+        assertEquals(2, functions.size());
+        assertTrue(functions.contains("build:lemon"));
+        assertTrue(functions.contains("build:lemon:master"));
+    }
+
 
 }

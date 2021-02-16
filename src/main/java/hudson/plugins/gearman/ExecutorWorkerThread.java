@@ -18,24 +18,18 @@
 
 package hudson.plugins.gearman;
 
-import hudson.model.AbstractProject;
 import hudson.model.Computer;
 import hudson.model.Label;
-import hudson.model.labels.LabelAtom;
 import hudson.model.Node;
 import hudson.model.Node.Mode;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
-
-import jenkins.model.Jenkins;
-
+import hudson.model.labels.LabelAtom;
 import org.gearman.worker.GearmanFunctionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /*
@@ -117,14 +111,13 @@ public class ExecutorWorkerThread extends AbstractWorkerThread{
         if (!computer.isOffline()) {
             Node node = computer.getNode();
 
-            List<AbstractProject> allProjects = Jenkins.getActiveInstance().getAllItems(AbstractProject.class);
-            for (AbstractProject<?, ?> project : allProjects) {
+            for (GearmanProject project : GearmanProject.getAllItems()) {
 
                 if (project.isDisabled()) { // ignore all disabled projects
                     continue;
                 }
 
-                String projectName = project.getName();
+                String projectName = project.getJob().getName();
                 Label label = project.getAssignedLabel();
 
                 if (label == null) { // project has no label -> so register

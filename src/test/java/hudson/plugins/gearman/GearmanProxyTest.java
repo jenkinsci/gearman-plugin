@@ -22,30 +22,31 @@ import hudson.slaves.DumbSlave;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.jvnet.hudson.test.HudsonTestCase;
+import org.jvnet.hudson.test.JenkinsRule;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test for the {@link ExecutorWorkerThread} class.
  *
  * @author Khai Do
  */
-public class GearmanProxyTest extends HudsonTestCase {
+public class GearmanProxyTest {
 
+    @Rule
+    public JenkinsRule j = new JenkinsRule();
     GearmanProxy gp;
 
-    @Override
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         gp = GearmanProxy.getInstance();
     }
 
-    @Override
     @After
     public void tearDown() throws Exception {
         gp.testResetHandles();
-        super.tearDown();
     }
 
     @Test
@@ -63,7 +64,7 @@ public class GearmanProxyTest extends HudsonTestCase {
     @Test
     public void testCreateExecutorWorkersOnNode() throws Exception {
 
-        DumbSlave slave = createSlave();
+        DumbSlave slave = j.createSlave();
 
         assertEquals(0, gp.getNumExecutors());
 
@@ -85,7 +86,7 @@ public class GearmanProxyTest extends HudsonTestCase {
     @Test
     public void testInitWorkers2() throws Exception {
 
-        DumbSlave slave = createSlave();
+        DumbSlave slave = j.createSlave();
         gp.initWorkers();
 
         // exec: 2 slaves, 1 master + mgmnt: 1

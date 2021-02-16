@@ -38,6 +38,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 import org.gearman.common.Constants;
 import org.gearman.common.GearmanException;
@@ -123,7 +124,7 @@ public class MyGearmanWorkerImpl implements GearmanSessionEventHandler {
         }
     }
 
-    class FunctionRegistry {
+    static class FunctionRegistry {
         private Set<GearmanFunctionFactory> functions;
         private boolean updated = false;
 

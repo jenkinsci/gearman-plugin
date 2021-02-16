@@ -97,8 +97,13 @@ public class SetDescriptionWorker extends AbstractGearmanFunction {
             throw new IllegalArgumentException("Build id is invalid or not specified");
         }
 
-        GearmanJobResult gjr = new GearmanJobResultImpl(this.jobHandle, jobResult,
-                jobResultMsg.getBytes(), null, null, 0, 0);
+        GearmanJobResult gjr = null;
+        try {
+            gjr = new GearmanJobResultImpl(this.jobHandle, jobResult,
+                    jobResultMsg.getBytes("UTF-8"), null, null, 0, 0);
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException("Unsupported encoding exception in gearman job result");
+        }
         return gjr;
     }
 }

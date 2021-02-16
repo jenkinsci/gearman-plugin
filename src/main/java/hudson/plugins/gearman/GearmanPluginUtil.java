@@ -18,12 +18,12 @@
 
 package hudson.plugins.gearman;
 
-import hudson.model.AbstractProject;
 import hudson.model.Computer;
 import hudson.model.Run;
 import hudson.security.ACL;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import jenkins.model.Jenkins;
 
@@ -56,7 +56,7 @@ public class GearmanPluginUtil {
      */
     public static String getRealName(Computer computer) {
 
-        if (Jenkins.getActiveInstance().getComputer("") == computer) {
+        if (Jenkins.getInstance().getComputer("") == computer) {
             return "master";
         } else {
             return computer.getName();
@@ -67,7 +67,7 @@ public class GearmanPluginUtil {
      * Function to finds the build with the unique build id.
      *
      * @param jobName
-     *      The jenkins job or project name
+     *      The jenkins job or project name without folder name
      * @param buildNumber
      *      The jenkins build number
      * @return
@@ -77,9 +77,13 @@ public class GearmanPluginUtil {
 
         SecurityContext oldContext = ACL.impersonate(ACL.SYSTEM);
         try {
-            AbstractProject<?,?> project = Jenkins.getActiveInstance().getItemByFullName(jobName, AbstractProject.class);
-            if (project != null){
-                Run<?,?> run = project.getBuildByNumber(buildNumber);
+            Optional<GearmanProject> aproject = GearmanProject.getAllItems()
+                    .stream()
+                    .filter( (GearmanProject item) -> item.getJob().getName().equalsIgnoreCase(jobName))
+                    .findFirst();
+
+            if (aproject.isPresent()){
+                Run<?, ?> run =  aproject.get().getJob().getBuildByNumber(buildNumber);
                 if (run != null) {
                     return run;
                 }

@@ -81,6 +81,13 @@ public class StopJobWorker extends AbstractGearmanFunction {
         if (build != null) {
             if (build.isBuilding()) {
                 Executor executor = build.getExecutor();
+                if (executor == null) {
+                    executor = build.getOneOffExecutor();
+                }
+                if (executor == null) {
+                    throw new IllegalArgumentException("Cannot find executor for build " +
+                                                       jobName + ": " + buildNumber);
+                }
                 // abort the running jenkins build
                 if (!executor.isInterrupted()) {
                     executor.interrupt();
@@ -97,8 +104,13 @@ public class StopJobWorker extends AbstractGearmanFunction {
                                                jobName + ": " + buildNumber);
         }
 
-        GearmanJobResult gjr = new GearmanJobResultImpl(this.jobHandle, jobResult,
-                jobResultMsg.getBytes(), null, null, 0, 0);
+        GearmanJobResult gjr = null;
+        try {
+            gjr = new GearmanJobResultImpl(this.jobHandle, jobResult,
+                    jobResultMsg.getBytes("UTF-8"), null, null, 0, 0);
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException("Unsupported encoding exception in gearman job result");
+        }
         return gjr;
     }
 }

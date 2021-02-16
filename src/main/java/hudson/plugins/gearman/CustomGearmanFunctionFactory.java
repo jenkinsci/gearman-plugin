@@ -26,9 +26,7 @@
 
 package hudson.plugins.gearman;
 
-import hudson.model.AbstractProject;
 import hudson.model.Computer;
-import hudson.model.Project;
 
 import java.lang.reflect.Constructor;
 
@@ -39,7 +37,7 @@ import org.slf4j.LoggerFactory;
 
 public class CustomGearmanFunctionFactory extends DefaultGearmanFunctionFactory {
 
-    private final AbstractProject<?,?> project;
+    private final GearmanProject project;
     private final Computer computer;
     private final String theClass;
     private final String masterName;
@@ -49,7 +47,7 @@ public class CustomGearmanFunctionFactory extends DefaultGearmanFunctionFactory 
             Constants.GEARMAN_WORKER_LOGGER_NAME);
 
     public CustomGearmanFunctionFactory(String functionName, String className,
-                                        AbstractProject<?,?> project, Computer computer,
+                                        GearmanProject project, Computer computer,
                                         String masterName,
                                         MyGearmanWorkerImpl worker) {
         super(functionName, className);
@@ -67,13 +65,13 @@ public class CustomGearmanFunctionFactory extends DefaultGearmanFunctionFactory 
                                       worker);
     }
 
-    private static GearmanFunction createFunctionInstance(String className, AbstractProject<?,?> project, Computer computer, String masterName, MyGearmanWorkerImpl worker) {
+    private static GearmanFunction createFunctionInstance(String className, GearmanProject project, Computer computer, String masterName, MyGearmanWorkerImpl worker) {
 
         GearmanFunction f = null;
         try {
 
             Class<?> c = Class.forName(className);
-            Constructor<?> con = c.getConstructor(new Class[]{AbstractProject.class, Computer.class, String.class, MyGearmanWorkerImpl.class});
+            Constructor<?> con = c.getConstructor(new Class[]{GearmanProject.class, Computer.class, String.class, MyGearmanWorkerImpl.class});
             Object o = con.newInstance(new Object[] {project, computer, masterName, worker});
 
             if (o instanceof GearmanFunction) {

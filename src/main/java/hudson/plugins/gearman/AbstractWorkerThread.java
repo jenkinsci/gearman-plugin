@@ -60,7 +60,8 @@ public abstract class AbstractWorkerThread implements Runnable {
         synchronized(this) {
             if (running) {
                 worker = new MyGearmanWorkerImpl(getAvailability());
-                conn = new GearmanNIOJobServerConnection(host, port);
+                // Use custom-built child class to enable keep-alive
+                conn = new GearmanNIOJobServerConnectionImpl(host, port);
             }
         }
     }

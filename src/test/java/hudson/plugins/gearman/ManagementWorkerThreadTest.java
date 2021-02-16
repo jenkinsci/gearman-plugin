@@ -19,6 +19,7 @@
 package hudson.plugins.gearman;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -61,8 +62,8 @@ public class ManagementWorkerThreadTest {
         manager.testInitWorker();
         manager.registerJobs();
         Set<String> functions = manager.worker.getRegisteredFunctions();
-        assertEquals("set_description:master", functions.toArray()[0]);
-        assertEquals("stop:master", functions.toArray()[1]);
+        assertTrue(functions.contains("set_description:master"));
+        assertTrue(functions.contains("stop:master"));
     }
 
     @Test

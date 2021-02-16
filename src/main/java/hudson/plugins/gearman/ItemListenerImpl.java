@@ -75,7 +75,7 @@ public class ItemListenerImpl extends ItemListener {
     // register gearman functions
     private void registerJobs() {
         // update functions only when gearman-plugin is enabled
-        if (!GearmanPluginConfig.get().enablePlugin()) {
+        if (!GearmanPluginConfig.get().isEnablePlugin()) {
             return;
         }
         GearmanProxy.getInstance().registerJobs();

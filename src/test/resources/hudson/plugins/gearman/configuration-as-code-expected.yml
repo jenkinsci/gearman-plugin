@@ -1,0 +1,3 @@
+enablePlugin: true
+host: "myhost.example"
+port: 12345

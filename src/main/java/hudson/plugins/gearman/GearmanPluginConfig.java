@@ -17,6 +17,7 @@
  */
 package hudson.plugins.gearman;
 
+import hudson.BulkChange;
 import hudson.Extension;
 import hudson.model.Descriptor;
 import hudson.util.FormValidation;
@@ -32,6 +33,7 @@ import net.sf.json.JSONObject;
 
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.DataBoundSetter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -134,17 +136,41 @@ public class GearmanPluginConfig extends GlobalConfiguration {
 
         }
 
-        req.bindJSON(this, json);
-        save();
+        // Use of BulkChange allows avoiding repeated calls to save() to actually persist to disk only once fully configured
+        BulkChange bc = new BulkChange(this);
+        try {
+            req.bindJSON(this, json);
+            bc.commit();
+        } catch (IOException e) {
+            bc.abort();
+            throw new FormException("Failed to apply configuration", e, null);
+        }
         return true;
     }
 
+    @DataBoundSetter
+    public void setHost(String host) {
+        this.host = host;
+        save();
+    }
+
+    @DataBoundSetter
+    public void setPort(int port) {
+        this.port = port;
+        save();
+    }
+
+    @DataBoundSetter
+    public void setEnablePlugin(boolean enablePlugin) {
+        this.enablePlugin = enablePlugin;
+        save();
+    }
 
     /**
      * This method returns true if the global configuration says we should
      * enable the plugin.
      */
-    public boolean enablePlugin() {
+    public boolean isEnablePlugin() {
         return Objects.firstNonNull(enablePlugin, Constants.GEARMAN_DEFAULT_ENABLE_PLUGIN);
     }
 

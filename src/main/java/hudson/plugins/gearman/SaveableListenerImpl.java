@@ -24,6 +24,7 @@ import hudson.model.Saveable;
 import hudson.model.AbstractProject;
 import hudson.model.listeners.SaveableListener;
 
+import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,13 +46,13 @@ public class SaveableListenerImpl extends SaveableListener {
     // also doesn't provide much detail on what has changed.
     public void onChange(Saveable o, XmlFile file) {
         // update functions only when gearman-plugin is enabled
-        if (!GearmanPluginConfig.get().enablePlugin()) {
+        if (!GearmanPluginConfig.get().isEnablePlugin()) {
             return;
         }
 
         // only look for changes to projects, specifically for project
         // label changes.  Node changes are handled in ComputerListenerImpl
-        if (o instanceof AbstractProject) {
+        if (GearmanProject.isSupported(o)) {
             GearmanProxy.getInstance().registerJobs();
         }
     }

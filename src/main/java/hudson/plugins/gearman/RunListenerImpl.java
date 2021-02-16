@@ -41,7 +41,7 @@ public class RunListenerImpl extends RunListener<Run> {
     @Override
     public void onFinalized(Run r) {
         // update only when gearman-plugin is enabled
-        if (!GearmanPluginConfig.get().enablePlugin()) {
+        if (!GearmanPluginConfig.get().isEnablePlugin()) {
             return;
         }
 

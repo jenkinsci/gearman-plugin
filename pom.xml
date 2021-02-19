@@ -71,6 +71,11 @@
             <name>Khai Do</name>
             <email>zaro0508@gmail.com</email>
         </developer>
+        <developer>
+            <id>hashar</id>
+            <name>Antoine Musso</name>
+            <email>hashar@free.fr</email>
+        </developer>
     </developers>
 
 <!-- #we don't need download tarball anymore, now we build from the source code

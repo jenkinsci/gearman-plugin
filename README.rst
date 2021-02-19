@@ -1,44 +1,38 @@
-GoodData fork of gearman plugin. For releasing use standard release job in CI system.
-
-# Original description
-
 Overview
 ========
 This plugin uses Gearman to support multiple Jenkins masters.
-More info can be found at https://wiki.jenkins-ci.org/display/JENKINS/Gearman+Plugin
+
+More informations can be found at https://plugins.jenkins.io/gearman-plugin/
+
+History
+=======
+
+The plugin has been originally written by Khai Do (@zaro0508) for the OpenStack
+CI infrastructure. They needed a way to scale Jenkins to multiple masters and
+went with the Gearman protocol since some were familiar with it. OpenStack
+eventually replaced Jenkins with Ansible and the plugin.
+
+The Gooddata company forked it and notably added support for Jenkins Pipeline
+jobs.
+
+The Wikimedia Foundation had the use case to support Java 11. It required to
+address a backware incompatible in the gearman-java library which had been
+untouched since 2012.  As a commitment to the upstream Jenkins community the
+old Github repository has been taken over:
+* the old `master` branch has been renamed `legacy`
+* The GoodData fork has been merged in
+* The Java 11 incompatibility issue has been addressed
+
+Some details can be found at https://phabricator.wikimedia.org/T271683
+
+Legacy:
+* Bugs: https://storyboard.openstack.org/#!/project/706
+* Changes: https://review.opendev.org/q/project:x/gearman-plugin
 
 Contributing
 ============
-If you would like to contribute to the development of OpenStack,
-you must follow the steps in this page:
 
-   http://docs.openstack.org/infra/manual/developers.html
-
-If you already have a good understanding of how the system works and your
-OpenStack accounts are set up, you can skip to the development workflow section
-of this documentation to learn how changes to OpenStack should be submitted for
-review via the Gerrit tool:
-
-   http://docs.openstack.org/infra/manual/developers.html#development-workflow
-
-Pull requests submitted through GitHub will be ignored.
-
-Project site:
-
- * https://wiki.jenkins-ci.org/display/JENKINS/Gearman+Plugin
-
-Patches are submitted via Gerrit at:
-
- * https://review.openstack.org/
-
-Bugs should be filed on StoryBoard, not GitHub:
-
-   https://storyboard.openstack.org/#!/project/706
-
-Cloning:
-
- * https://git.openstack.org/openstack-infra/gearman-plugin
-
+The canonical repository is https://github.com/jenkinsci/gearman-plugin/
 
 License
 =======
@@ -62,4 +56,3 @@ RPM build
 * Change the version of plugin in spec file
 * Update plugin %changelog in spec file
 * Rebuild rpm package with job build https://checklist.intgdc.com/job/tools/job/rpmbuild-el7-tools and merge
-

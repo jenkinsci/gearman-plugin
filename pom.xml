@@ -51,7 +51,7 @@
 
     <artifactId>gearman-plugin</artifactId>
     <packaging>hpi</packaging>
-    <version>0.3.3-SNAPSHOT</version>
+    <version>0.4.0</version>
 
     <name>Gearman Plugin</name>
     <description>Integrates Gearman application framework with Jenkins</description>
@@ -82,7 +82,7 @@
         <connection>scm:git:git@github.com:jenkinsci/gearman-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:jenkinsci/gearman-plugin.git</developerConnection>
         <url>https://github.com/jenkinsci/gearman-plugin</url>
-        <tag>HEAD</tag>
+        <tag>gearman-plugin-0.4.0</tag>
     </scm>
 
     <properties>

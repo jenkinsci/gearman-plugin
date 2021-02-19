@@ -73,17 +73,6 @@
         </developer>
     </developers>
 
-    <distributionManagement>
-        <repository>
-            <id>gooddata</id>
-            <url>https://nexus.intgdc.com/nexus/content/repositories/gooddata/</url>
-        </repository>
-        <snapshotRepository>
-            <id>gooddata-snapshots</id>
-            <url>https://nexus.intgdc.com/nexus/content/repositories/gooddata-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
-
 <!-- #we don't need download tarball anymore, now we build from the source code
     <scm>
         <connection>scm:git:git@github.com:gooddata/gearman-plugin.git</connection>

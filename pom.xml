@@ -87,7 +87,7 @@
 
     <properties>
         <java.level>8</java.level>
-        <jenkins.version>2.164.1</jenkins.version>
+        <jenkins.version>2.176.4</jenkins.version>
         <!-- define all plugin versions -->
         <configuration-as-code.version>1.35</configuration-as-code.version>
         <gson.version>2.8.2</gson.version>
@@ -96,10 +96,10 @@
         <mockito.version>2.28.2</mockito.version>
         <powermock.version>2.0.7</powermock.version>
         <objenesis.version>3.0.1</objenesis.version>
-        <jenkins-maven-plugin>3.1</jenkins-maven-plugin>
-        <jenkins-workflow-job-plugin>2.17</jenkins-workflow-job-plugin>
-        <jenkins-workflow-cps-plugin>2.45</jenkins-workflow-cps-plugin>
-        <jenkins-structs-plugin>1.14</jenkins-structs-plugin>
+        <jenkins-maven-plugin>3.7</jenkins-maven-plugin>
+        <jenkins-workflow-job-plugin>2.40</jenkins-workflow-job-plugin>
+        <jenkins-workflow-cps-plugin>2.80</jenkins-workflow-cps-plugin>
+        <jenkins-structs-plugin>1.20</jenkins-structs-plugin>
         <slf4j-api>1.7.30</slf4j-api>
         <maven.javadoc.skip>true</maven.javadoc.skip>
         <findbugs.failOnError>false</findbugs.failOnError>

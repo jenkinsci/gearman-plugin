@@ -159,10 +159,13 @@ public class ExecutorWorkerThread extends AbstractWorkerThread{
                 }
             }
         }
+        logger.debug("---- Worker "+ getName() +" registerJobs try to register " + newFunctionMap.size() + " function(s)");
         if (!newFunctionMap.keySet().equals(functionMap.keySet())) {
             functionMap = newFunctionMap;
             Set<GearmanFunctionFactory> functionSet = new HashSet<GearmanFunctionFactory>(functionMap.values());
             updateJobs(functionSet);
+        } else {
+            logger.debug("---- Worker "+ getName() +" registerJobs no changes");
         }
     }
 

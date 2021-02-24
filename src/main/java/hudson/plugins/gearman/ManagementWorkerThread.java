@@ -70,6 +70,7 @@ public class ManagementWorkerThread extends AbstractWorkerThread{
 
             updateJobs(functionSet);
             registered = true;
+            logger.debug("---- Worker "+ getName() +" registerJobs registered " + functionSet.size() + " function(s)");
         }
     }
 }

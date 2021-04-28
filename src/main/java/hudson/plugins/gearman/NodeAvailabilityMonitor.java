@@ -135,7 +135,8 @@ public class NodeAvailabilityMonitor implements AvailabilityMonitor {
             logger.debug("AvailabilityMonitor canTake request for UUID " +
                          param.getUuid() + " expecting " + expectedUUID);
 
-            if (expectedUUID.equalsIgnoreCase(param.getUuid())) {
+            if (expectedUUID != null &&
+                expectedUUID.equalsIgnoreCase(param.getUuid())) {
                 return true;
             }
         }

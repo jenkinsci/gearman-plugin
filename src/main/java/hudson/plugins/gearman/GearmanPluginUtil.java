@@ -21,14 +21,13 @@ package hudson.plugins.gearman;
 import hudson.model.Computer;
 import hudson.model.Run;
 import hudson.security.ACL;
+import hudson.security.ACLContext;
 
 import java.io.IOException;
 import java.util.Optional;
 
 import jenkins.model.Jenkins;
 
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.context.SecurityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,8 +74,7 @@ public class GearmanPluginUtil {
      */
     public static Run<?,?> findBuild(String jobName, int buildNumber) {
 
-        SecurityContext oldContext = ACL.impersonate(ACL.SYSTEM);
-        try {
+        try (ACLContext ctx = ACL.as2(ACL.SYSTEM2)) {
             Optional<GearmanProject> aproject = GearmanProject.getAllItems()
                     .stream()
                     .filter( (GearmanProject item) -> item.getJob().getName().equalsIgnoreCase(jobName))
@@ -89,8 +87,6 @@ public class GearmanPluginUtil {
                 }
             }
             return null;
-        } finally {
-            SecurityContextHolder.setContext(oldContext);
         }
     }
 
@@ -103,11 +99,8 @@ public class GearmanPluginUtil {
      *      New build description
      */
     public static void setBuildDescription(Run build, String description) throws IOException {
-        SecurityContext oldContext = ACL.impersonate(ACL.SYSTEM);
-        try {
+        try (ACLContext ctx = ACL.as2(ACL.SYSTEM2)) {
             build.setDescription(description);
-        } finally {
-            SecurityContextHolder.setContext(oldContext);
         }
     }
 }

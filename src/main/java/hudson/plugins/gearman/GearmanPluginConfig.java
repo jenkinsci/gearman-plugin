@@ -37,8 +37,6 @@ import org.kohsuke.stapler.DataBoundSetter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Objects;
-
 /**
  * This class is used to set the global configuration for the gearman-plugin It
  * is also used to enable/disable the gearman plugin.
@@ -50,7 +48,7 @@ public class GearmanPluginConfig extends GlobalConfiguration {
 
     private static final Logger logger = LoggerFactory
             .getLogger(Constants.PLUGIN_LOGGER_NAME);
-    private boolean enablePlugin; // config to enable and disable plugin
+    private boolean enablePlugin = Constants.GEARMAN_DEFAULT_ENABLE_PLUGIN; // config to enable and disable plugin
     private String host; // gearman server host
     private int port; // gearman server port
 
@@ -171,14 +169,14 @@ public class GearmanPluginConfig extends GlobalConfiguration {
      * enable the plugin.
      */
     public boolean isEnablePlugin() {
-        return Objects.firstNonNull(enablePlugin, Constants.GEARMAN_DEFAULT_ENABLE_PLUGIN);
+        return enablePlugin;
     }
 
     /**
      * This method returns the value from the server host text box
      */
     public String getHost() {
-        return Objects.firstNonNull(host, Constants.GEARMAN_DEFAULT_TCP_HOST);
+        return host != null ? host : Constants.GEARMAN_DEFAULT_TCP_HOST;
     }
 
     /**

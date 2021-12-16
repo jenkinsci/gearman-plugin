@@ -50,9 +50,3 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-
-RPM build
-=========
-* Change the version of plugin in spec file
-* Update plugin %changelog in spec file
-* Rebuild rpm package with job build https://checklist.intgdc.com/job/tools/job/rpmbuild-el7-tools and merge

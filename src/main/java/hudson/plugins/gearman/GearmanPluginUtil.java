@@ -42,21 +42,21 @@ public class GearmanPluginUtil {
             .getLogger(Constants.PLUGIN_LOGGER_NAME);
 
     /*
-     * This method returns the real computer name.  Master computer
-     * by default has an empty string for the name.  But you
-     * need to use "master" to tell jenkins to do stuff,
-     * namely like schedule a build.
+     * This method returns the real computer name.
+	 * Built-in node * by default has an empty string for the name.  But you
+     * need to use "built-in" to tell jenkins to do stuff, namely like schedule a build.
      *
      * @param Computer
      *      The computer to lookup
      *
      * @return
-     *      "master" for the master computer or assigned name of the slave computer
+	 *      "built-in" for the built-in computer running on the controller or
+	 *      assigned name of the slave computer
      */
     public static String getRealName(Computer computer) {
 
         if (Jenkins.getInstance().getComputer("") == computer) {
-            return "master";
+            return "built-in";
         } else {
             return computer.getName();
         }

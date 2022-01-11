@@ -56,7 +56,7 @@ public class GearmanProxyTest {
 
         gp.createManagementWorker();
 
-        // mgmt: 1 master
+        // mgmt: 1 built-in
         assertEquals(1, gp.getNumExecutors());
         //        assertTrue(gp.getGmwtHandles().get(0).isAlive());
     }
@@ -70,7 +70,7 @@ public class GearmanProxyTest {
 
         gp.createExecutorWorkersOnNode(slave.toComputer());
 
-        // exec: 1 master
+        // exec: 1 built-in
         assertEquals(1, gp.getNumExecutors());
     }
 
@@ -79,7 +79,7 @@ public class GearmanProxyTest {
 
         gp.initWorkers();
 
-        // exec: 1 slave, 1 master + mgmnt: 1
+        // exec: 1 slave, 1 built-in + mgmnt: 1
         assertEquals(3, gp.getNumExecutors());
     }
 
@@ -89,7 +89,7 @@ public class GearmanProxyTest {
         DumbSlave slave = j.createSlave();
         gp.initWorkers();
 
-        // exec: 2 slaves, 1 master + mgmnt: 1
+        // exec: 2 slaves, 1 built-in + mgmnt: 1
         assertEquals(4, gp.getNumExecutors());
     }
 }

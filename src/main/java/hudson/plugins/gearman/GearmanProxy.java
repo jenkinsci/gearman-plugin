@@ -51,7 +51,7 @@ public class GearmanProxy {
     // handles to gearman workers
     private final List<ExecutorWorkerThread> gewtHandles;
     private final List<ManagementWorkerThread> gmwtHandles;
-    private final String masterName;
+    private final String builtInName;
 
     // Singleton instance
     public static synchronized GearmanProxy getInstance() {
@@ -66,17 +66,17 @@ public class GearmanProxy {
         gewtHandles = Collections.synchronizedList(new ArrayList<ExecutorWorkerThread>());
         gmwtHandles = Collections.synchronizedList(new ArrayList<ManagementWorkerThread>());
 
-        Computer master = null;
+        Computer builtInNode = null;
         String hostname = Constants.GEARMAN_DEFAULT_EXECUTOR_NAME;
-        // query Jenkins for master's name
+        // query Jenkins for built-in name
         try {
-            master = Jenkins.get().getComputer("");
-            hostname = master.getHostName();
+            builtInNode = Jenkins.get().getComputer("");
+            hostname = builtInNode.getHostName();
         } catch (Exception e) {
             logger.warn("Exception while getting hostname", e);
         }
-        // master node may not be enabled so get masterName from system
-        if (master == null) {
+        // Built-in node may not be enabled so get builtInName from system
+        if (builtInNode == null) {
             try {
                 hostname = java.net.InetAddress.getLocalHost().getHostName();
             } catch (UnknownHostException e) {
@@ -84,7 +84,7 @@ public class GearmanProxy {
             }
         }
 
-        masterName = hostname;
+        builtInName = hostname;
     }
 
     /*
@@ -112,22 +112,23 @@ public class GearmanProxy {
         createManagementWorker();
 
         /*
-         * Spawn executors for the jenkins master Need to treat the master
-         * differently than slaves because the master is not the same as a
-         * slave
+         * Spawn executors for the Jenkins built-in node.
+		 *
+		 * We need to treat the built-in node differently than slaves because
+		 * the built-in is not the same as a slave
          */
-        // first make sure master is enabled (or has executors)
-        Node masterNode = null;
+        // first make sure built-in node is enabled (or has executors)
+        Node builtInNode = null;
         try {
-            masterNode = Jenkins.get().getComputer("").getNode();
+            builtInNode = Jenkins.get().getComputer("").getNode();
         } catch (NullPointerException npe) {
-            logger.info("---- Master is offline");
+            logger.info("---- Built-in node is offline");
         } catch (Exception e) {
-            logger.warn("Exception while finding master", e);
+            logger.warn("Exception while finding built-in node", e);
         }
 
-        if (masterNode != null) {
-            Computer computer = masterNode.toComputer();
+        if (builtInNode != null) {
+            Computer computer = builtInNode.toComputer();
             if (computer != null) {
                 createExecutorWorkersOnNode(computer);
             }
@@ -165,8 +166,8 @@ public class GearmanProxy {
             gwt = new ManagementWorkerThread(
                 GearmanPluginConfig.get().getHost(),
                 GearmanPluginConfig.get().getPort(),
-                masterName + "_manager",
-                masterName, new NoopAvailabilityMonitor());
+                builtInName + "_manager",
+                builtInName, new NoopAvailabilityMonitor());
             gmwtHandles.add(gwt);
             gwt.start();
         }
@@ -195,15 +196,15 @@ public class GearmanProxy {
                 String nodeName = null;
 
                 nodeName = GearmanPluginUtil.getRealName(computer);
-                if (nodeName == "master") {
-                    nodeName = masterName;
+                if (nodeName == "built-in") {
+                    nodeName = builtInName;
                 }
 
                 ExecutorWorkerThread ewt = new ExecutorWorkerThread(
                     GearmanPluginConfig.get().getHost(),
                     GearmanPluginConfig.get().getPort(),
                     nodeName+"_exec-"+Integer.toString(i),
-                    computer, masterName, availability);
+                    computer, builtInName, availability);
 
                 ewt.start();
                 gewtHandles.add(ewt);

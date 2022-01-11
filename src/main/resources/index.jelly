@@ -1,4 +1,4 @@
 <?jelly escape-by-default='true'?>
 <div>
-  This plugin uses Gearman to support multiple Jenkins masters.
+  This plugin uses Gearman to support multiple Jenkins controllers.
 </div>

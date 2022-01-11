@@ -58,19 +58,19 @@ public class ManagementWorkerThreadTest {
     @Test
     public void testRegisterJobs() {
         AbstractWorkerThread manager = new ManagementWorkerThread("GearmanServer", 4730,
-                                                                  "master_manager", "master", new NoopAvailabilityMonitor());
+                                                                  "built-in_manager", "built-in", new NoopAvailabilityMonitor());
         manager.testInitWorker();
         manager.registerJobs();
         Set<String> functions = manager.worker.getRegisteredFunctions();
-        assertTrue(functions.contains("set_description:master"));
-        assertTrue(functions.contains("stop:master"));
+        assertTrue(functions.contains("set_description:built-in"));
+        assertTrue(functions.contains("stop:built-in"));
     }
 
     @Test
     public void testManagerId() {
         AbstractWorkerThread manager = new ManagementWorkerThread("GearmanServer", 4730,
-                                                                  "master_manager", "master", new NoopAvailabilityMonitor());
-        assertEquals("master_manager", manager.getName());
+                                                                  "built-in_manager", "built-in", new NoopAvailabilityMonitor());
+        assertEquals("built-in_manager", manager.getName());
     }
 
 }

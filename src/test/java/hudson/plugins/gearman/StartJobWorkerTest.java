@@ -38,14 +38,14 @@ public class StartJobWorkerTest {
         doNothing().when(listener).handleGearmanIOEvent(any());
 
         // setup available computers
-        Computer masterNode = j.jenkins.getComputer("");
-        GearmanProxy.getInstance().createExecutorWorkersOnNode(masterNode);
+        Computer builtInNode = j.jenkins.getComputer("");
+        GearmanProxy.getInstance().createExecutorWorkersOnNode(builtInNode);
 
         // setup worker
         StartJobWorker startJobWorker = new StartJobWorker(
                 gearmanProject, // zuul project
-                masterNode, // computer - master node
-                masterNode.getHostName(),
+                builtInNode, // computer - built-in node
+                builtInNode.getHostName(),
                 myGearmanWorker
         );
         startJobWorker.registerEventListener(listener);

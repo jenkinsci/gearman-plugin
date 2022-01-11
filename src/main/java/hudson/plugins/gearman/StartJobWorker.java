@@ -60,14 +60,14 @@ public class StartJobWorker extends AbstractGearmanFunction {
 
     Computer computer;
     GearmanProject project;
-    String masterName;
+    String builtInName;
     MyGearmanWorkerImpl worker;
 
-    public StartJobWorker(GearmanProject project, Computer computer, String masterName,
+    public StartJobWorker(GearmanProject project, Computer computer, String builtInName,
                           MyGearmanWorkerImpl worker) {
         this.project = project;
         this.computer = computer;
-        this.masterName = masterName;
+        this.builtInName = builtInName;
         this.worker = worker;
     }
 
@@ -76,7 +76,7 @@ public class StartJobWorker extends AbstractGearmanFunction {
 
        data.put("name", project.getJob().getName());
        data.put("number", build.getNumber());
-       data.put("manager", masterName);
+       data.put("manager", builtInName);
        data.put("worker", this.worker.getWorkerID());
 
        String rootUrl = Jenkins.getInstance().getRootUrl();

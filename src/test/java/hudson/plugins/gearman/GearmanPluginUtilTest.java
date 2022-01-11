@@ -55,9 +55,9 @@ public class GearmanPluginUtilTest {
     }
 
     @Test
-    public void testGetRealNameMaster() throws Exception {
+    public void testGetRealNameBuiltIn() throws Exception {
 
-        assertEquals("master", GearmanPluginUtil.getRealName(Jenkins.getInstance().getComputer("")));
+        assertEquals("built-in", GearmanPluginUtil.getRealName(Jenkins.getInstance().getComputer("")));
     }
 
     @Test

@@ -80,7 +80,7 @@ public class ExecutorWorkerThreadTest{
         Project<?, ?> lemon = j.createFreeStyleProject("lemon");
         lemon.setAssignedLabel(new LabelAtom("linux"));
 
-        AbstractWorkerThread oneiric = new ExecutorWorkerThread("GearmanServer", 4730, "MyWorker", slave.toComputer(), "master", new NoopAvailabilityMonitor());
+        AbstractWorkerThread oneiric = new ExecutorWorkerThread("GearmanServer", 4730, "MyWorker", slave.toComputer(), "built-in", new NoopAvailabilityMonitor());
         oneiric.testInitWorker();
         oneiric.registerJobs();
         Set<String> functions = oneiric.worker.getRegisteredFunctions();
@@ -101,7 +101,7 @@ public class ExecutorWorkerThreadTest{
         Project<?, ?> lemon = j.createFreeStyleProject("lemon");
         lemon.setAssignedLabel(new LabelAtom("bogus"));
 
-        AbstractWorkerThread oneiric = new ExecutorWorkerThread("GearmanServer", 4730, "MyWorker", slave.toComputer(), "master", new NoopAvailabilityMonitor());
+        AbstractWorkerThread oneiric = new ExecutorWorkerThread("GearmanServer", 4730, "MyWorker", slave.toComputer(), "built-in", new NoopAvailabilityMonitor());
         oneiric.testInitWorker();
         oneiric.registerJobs();
         Set<String> functions = oneiric.worker.getRegisteredFunctions();
@@ -125,7 +125,7 @@ public class ExecutorWorkerThreadTest{
                                             4730,
                                             "MyWorker",
                                             slave.toComputer(),
-                                            "master",
+                                            "built-in",
                                             new NoopAvailabilityMonitor());
         oneiric.testInitWorker();
         oneiric.registerJobs();
@@ -152,7 +152,7 @@ public class ExecutorWorkerThreadTest{
                                             4730,
                                             "MyWorker",
                                             exclusive_slave.toComputer(),
-                                            "master",
+                                            "built-in",
                                             new NoopAvailabilityMonitor());
         oneiric.testInitWorker();
         oneiric.registerJobs();
@@ -172,7 +172,7 @@ public class ExecutorWorkerThreadTest{
         lemon.setAssignedLabel(new LabelAtom("linux"));
         lemon.disable();
 
-        AbstractWorkerThread oneiric = new ExecutorWorkerThread("GearmanServer", 4730, "MyWorker", slave.toComputer(), "master", new NoopAvailabilityMonitor());
+        AbstractWorkerThread oneiric = new ExecutorWorkerThread("GearmanServer", 4730, "MyWorker", slave.toComputer(), "built-in", new NoopAvailabilityMonitor());
         oneiric.testInitWorker();
         oneiric.registerJobs();
         Set<String> functions = oneiric.worker.getRegisteredFunctions();
@@ -194,7 +194,7 @@ public class ExecutorWorkerThreadTest{
         Project<?, ?> lemon = j.createFreeStyleProject("lemon");
         lemon.setAssignedLabel(new LabelAtom("linux"));
 
-        AbstractWorkerThread oneiric = new ExecutorWorkerThread("GearmanServer", 4730, "MyWorker", offlineSlave.toComputer(), "master", new NoopAvailabilityMonitor());
+        AbstractWorkerThread oneiric = new ExecutorWorkerThread("GearmanServer", 4730, "MyWorker", offlineSlave.toComputer(), "built-in", new NoopAvailabilityMonitor());
         oneiric.testInitWorker();
         oneiric.registerJobs();
         Set<String> functions = oneiric.worker.getRegisteredFunctions();
@@ -213,7 +213,7 @@ public class ExecutorWorkerThreadTest{
         MavenModuleSet lemon = j.createProject(MavenModuleSet.class, "lemon");
         lemon.setAssignedLabel(new LabelAtom("linux"));
 
-        AbstractWorkerThread oneiric = new ExecutorWorkerThread("GearmanServer", 4730, "MyWorker", slave.toComputer(), "master", new NoopAvailabilityMonitor());
+        AbstractWorkerThread oneiric = new ExecutorWorkerThread("GearmanServer", 4730, "MyWorker", slave.toComputer(), "built-in", new NoopAvailabilityMonitor());
         oneiric.testInitWorker();
         oneiric.registerJobs();
         Set<String> functions = oneiric.worker.getRegisteredFunctions();
@@ -235,7 +235,7 @@ public class ExecutorWorkerThreadTest{
         Project<?, ?> lemon = j.createFreeStyleProject("lemon");
         lemon.setAssignedLabel(new LabelAtom("!linux"));
 
-        AbstractWorkerThread oneiric = new ExecutorWorkerThread("GearmanServer", 4730, "MyWorker", slave.toComputer(), "master", new NoopAvailabilityMonitor());
+        AbstractWorkerThread oneiric = new ExecutorWorkerThread("GearmanServer", 4730, "MyWorker", slave.toComputer(), "built-in", new NoopAvailabilityMonitor());
         oneiric.testInitWorker();
         oneiric.registerJobs();
         Set<String> functions = oneiric.worker.getRegisteredFunctions();
@@ -245,22 +245,22 @@ public class ExecutorWorkerThreadTest{
 
     /*
      * This test verifies that gearman functions are correctly registered for a
-     * workflow project. All workflow projects have are executed on master itself,
-     * so they have default assigned labels "master", {@link WorkflowJob#getAssignedLabel}
+     * workflow project. All workflow projects have to be executed on the built-in node itself,
+     * so they have default assigned label "built-in", {@link WorkflowJob#getAssignedLabel}
      */
     @Test
     public void testRegisterJobs_WorkflowProject() throws Exception {
 
         WorkflowJob lemon = j.createProject(WorkflowJob.class,"lemon");
 
-        AbstractWorkerThread oneiric = new ExecutorWorkerThread("GearmanServer", 4730, "MyWorker", j.jenkins.getComputer(""), "master", new NoopAvailabilityMonitor());
+        AbstractWorkerThread oneiric = new ExecutorWorkerThread("GearmanServer", 4730, "MyWorker", j.jenkins.getComputer(""), "built-in", new NoopAvailabilityMonitor());
         oneiric.testInitWorker();
         oneiric.registerJobs();
         Set<String> functions = oneiric.worker.getRegisteredFunctions();
 
         assertEquals(2, functions.size());
         assertTrue(functions.contains("build:lemon"));
-        assertTrue(functions.contains("build:lemon:master"));
+        assertTrue(functions.contains("build:lemon:built-in"));
     }
 
 

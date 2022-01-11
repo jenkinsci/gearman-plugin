@@ -20,9 +20,12 @@ package hudson.plugins.gearman;
 
 import hudson.Extension;
 import hudson.XmlFile;
+import hudson.init.InitMilestone;
 import hudson.model.Saveable;
 import hudson.model.AbstractProject;
 import hudson.model.listeners.SaveableListener;
+
+import jenkins.model.Jenkins;
 
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.slf4j.Logger;
@@ -45,6 +48,10 @@ public class SaveableListenerImpl extends SaveableListener {
     // for just about any change that happens in Jenkins. This event
     // also doesn't provide much detail on what has changed.
     public void onChange(Saveable o, XmlFile file) {
+        if (Jenkins.get().getInitLevel() != InitMilestone.COMPLETED) {
+            logger.info("Plugins not fully loaded, ignoring change to " + file);
+            return;
+        }
         // update functions only when gearman-plugin is enabled
         if (!GearmanPluginConfig.get().isEnablePlugin()) {
             return;

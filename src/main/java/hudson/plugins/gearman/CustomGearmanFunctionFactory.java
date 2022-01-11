@@ -40,7 +40,7 @@ public class CustomGearmanFunctionFactory extends DefaultGearmanFunctionFactory 
     private final GearmanProject project;
     private final Computer computer;
     private final String theClass;
-    private final String masterName;
+    private final String builtInName;
     private final MyGearmanWorkerImpl worker;
 
     private static final org.slf4j.Logger LOG =  LoggerFactory.getLogger(
@@ -48,31 +48,31 @@ public class CustomGearmanFunctionFactory extends DefaultGearmanFunctionFactory 
 
     public CustomGearmanFunctionFactory(String functionName, String className,
                                         GearmanProject project, Computer computer,
-                                        String masterName,
+                                        String builtInName,
                                         MyGearmanWorkerImpl worker) {
         super(functionName, className);
         this.theClass = className;
         this.project = project;
         this.computer = computer;
-        this.masterName = masterName;
+        this.builtInName = builtInName;
         this.worker = worker;
     }
 
 
     @Override
     public GearmanFunction getFunction() {
-        return createFunctionInstance(theClass, project, computer, masterName,
+        return createFunctionInstance(theClass, project, computer, builtInName,
                                       worker);
     }
 
-    private static GearmanFunction createFunctionInstance(String className, GearmanProject project, Computer computer, String masterName, MyGearmanWorkerImpl worker) {
+    private static GearmanFunction createFunctionInstance(String className, GearmanProject project, Computer computer, String builtInName, MyGearmanWorkerImpl worker) {
 
         GearmanFunction f = null;
         try {
 
             Class<?> c = Class.forName(className);
             Constructor<?> con = c.getConstructor(new Class[]{GearmanProject.class, Computer.class, String.class, MyGearmanWorkerImpl.class});
-            Object o = con.newInstance(new Object[] {project, computer, masterName, worker});
+            Object o = con.newInstance(new Object[] {project, computer, builtInName, worker});
 
             if (o instanceof GearmanFunction) {
                 f = (GearmanFunction) o;

@@ -45,17 +45,17 @@ public class ExecutorWorkerThread extends AbstractWorkerThread{
             .getLogger(Constants.PLUGIN_LOGGER_NAME);
 
     private final Computer computer;
-    private final String masterName;
+    private final String builtInName;
 
     private HashMap<String,GearmanFunctionFactory> functionMap;
 
     // constructor
     public ExecutorWorkerThread(String host, int port, String name,
-                                Computer computer, String masterName,
+                                Computer computer, String builtInName,
                                 AvailabilityMonitor availability) {
         super(host, port, name, availability);
         this.computer = computer;
-        this.masterName = masterName;
+        this.builtInName = builtInName;
     }
 
     @Override
@@ -126,7 +126,7 @@ public class ExecutorWorkerThread extends AbstractWorkerThread{
                         String jobFunctionName = "build:" + projectName;
                         newFunctionMap.put(jobFunctionName, new CustomGearmanFunctionFactory(
                             jobFunctionName, StartJobWorker.class.getName(),
-                            project, computer, this.masterName, worker));
+                            project, computer, this.builtInName, worker));
                     }
                 } else { // register "build:$projectName:$label" if this
                          // node matches a node from the project label
@@ -145,7 +145,7 @@ public class ExecutorWorkerThread extends AbstractWorkerThread{
                         // register without label (i.e. "build:$projectName")
                         newFunctionMap.put(jobFunctionName, new CustomGearmanFunctionFactory(
                                 jobFunctionName, StartJobWorker.class.getName(),
-                                project, computer, this.masterName, worker));
+                                project, computer, this.builtInName, worker));
                         // iterate over the intersection of project and node labels
                         for (LabelAtom labelAtom : nodeProjectLabelAtoms) {
                             jobFunctionName = "build:" + projectName
@@ -153,7 +153,7 @@ public class ExecutorWorkerThread extends AbstractWorkerThread{
                             // register with label (i.e. "build:$projectName:$label")
                             newFunctionMap.put(jobFunctionName, new CustomGearmanFunctionFactory(
                                     jobFunctionName, StartJobWorker.class.getName(),
-                                    project, computer, this.masterName, worker));
+                                    project, computer, this.builtInName, worker));
                         }
                     }
                 }

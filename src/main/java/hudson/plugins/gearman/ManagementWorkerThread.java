@@ -39,11 +39,11 @@ public class ManagementWorkerThread extends AbstractWorkerThread{
             .getLogger(Constants.PLUGIN_LOGGER_NAME);
 
     private boolean registered = false;
-    private final String masterName;
+    private final String builtInName;
 
-    public ManagementWorkerThread(String host, int port, String name, String masterName, AvailabilityMonitor availability){
+    public ManagementWorkerThread(String host, int port, String name, String builtInName, AvailabilityMonitor availability){
         super(host, port, name, availability);
-        this.masterName = masterName;
+        this.builtInName = builtInName;
     }
 
     /**
@@ -63,9 +63,9 @@ public class ManagementWorkerThread extends AbstractWorkerThread{
         if (!registered) {
             Set<GearmanFunctionFactory> functionSet = new HashSet<GearmanFunctionFactory>();
 
-            functionSet.add(new DefaultGearmanFunctionFactory("stop:"+masterName,
+            functionSet.add(new DefaultGearmanFunctionFactory("stop:"+builtInName,
                             StopJobWorker.class.getName()));
-            functionSet.add(new DefaultGearmanFunctionFactory("set_description:"+masterName,
+            functionSet.add(new DefaultGearmanFunctionFactory("set_description:"+builtInName,
                     SetDescriptionWorker.class.getName()));
 
             updateJobs(functionSet);

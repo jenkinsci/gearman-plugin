@@ -1,6 +1,6 @@
 Overview
 ========
-This plugin uses Gearman to support multiple Jenkins masters.
+This plugin uses Gearman to support multiple Jenkins controllers.
 
 More informations can be found at https://plugins.jenkins.io/gearman-plugin/
 
@@ -8,8 +8,8 @@ History
 =======
 
 The plugin has been originally written by Khai Do (@zaro0508) for the OpenStack
-CI infrastructure. They needed a way to scale Jenkins to multiple masters and
-went with the Gearman protocol since some were familiar with it. OpenStack
+CI infrastructure. They needed a way to scale Jenkins to multiple controllers
+and went with the Gearman protocol since some were familiar with it. OpenStack
 eventually replaced Jenkins with Ansible and the plugin.
 
 The Gooddata company forked it and notably added support for Jenkins Pipeline

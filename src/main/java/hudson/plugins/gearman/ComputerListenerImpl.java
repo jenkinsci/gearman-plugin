@@ -76,7 +76,7 @@ public class ComputerListenerImpl extends ComputerListener {
     @Override
     public void onOnline(Computer c, TaskListener listener) throws IOException,
             InterruptedException {
-        // gets called when master goes into online state
+        // gets called when built-in node goes into online state
         // gets called when existing slave re-connects
         // gets called when new slave goes into online state
         logger.debug("---- " + ComputerListenerImpl.class.getName() + ":"
@@ -101,7 +101,7 @@ public class ComputerListenerImpl extends ComputerListener {
 
     @Override
     public void onTemporarilyOffline(Computer c, OfflineCause cause) {
-        // fired when master or slave goes into temporary offline state
+        // fired when built-in node or slave goes into temporary offline state
         logger.debug("---- " + ComputerListenerImpl.class.getName() + ":"
                 + " onTemporarilyOffline computer " + c);
         // update functions only when gearman-plugin is enabled
@@ -115,7 +115,7 @@ public class ComputerListenerImpl extends ComputerListener {
 
     @Override
     public void onTemporarilyOnline(Computer c) {
-        // fired when master or slave goes into temporary online state
+        // fired when built-in or slave goes into temporary online state
         logger.debug("---- " + ComputerListenerImpl.class.getName() + ":"
                 + " onTemporarilyOnline computer " + c);
         // update functions only when gearman-plugin is enabled

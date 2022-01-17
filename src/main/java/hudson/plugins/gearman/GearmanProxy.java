@@ -113,9 +113,9 @@ public class GearmanProxy {
 
         /*
          * Spawn executors for the Jenkins built-in node.
-		 *
-		 * We need to treat the built-in node differently than slaves because
-		 * the built-in is not the same as a slave
+         *
+         * We need to treat the built-in node differently than slaves because
+         * the built-in is not the same as a slave
          */
         // first make sure built-in node is enabled (or has executors)
         Node builtInNode = null;

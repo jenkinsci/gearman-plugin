@@ -16,7 +16,7 @@
    limitations under the License.
 -->
 
-<!-- 
+<!--
     Pass in the version on manual builds (i.e. mvn clean package -Dproject-version=1.0)
  -->
 
@@ -243,6 +243,26 @@
                         <type>pom</type>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.ec4j.maven</groupId>
+                <artifactId>editorconfig-maven-plugin</artifactId>
+                <version>0.1.1</version>
+                <executions>
+                    <execution>
+                        <id>check</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>work/</exclude>
+                        <exclude>.mvn/</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>

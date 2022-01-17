@@ -43,15 +43,15 @@ public class GearmanPluginUtil {
 
     /*
      * This method returns the real computer name.
-	 * Built-in node * by default has an empty string for the name.  But you
+     * Built-in node * by default has an empty string for the name.  But you
      * need to use "built-in" to tell jenkins to do stuff, namely like schedule a build.
      *
      * @param Computer
      *      The computer to lookup
      *
      * @return
-	 *      "built-in" for the built-in computer running on the controller or
-	 *      assigned name of the slave computer
+     *      "built-in" for the built-in computer running on the controller or
+     *      assigned name of the slave computer
      */
     public static String getRealName(Computer computer) {
 

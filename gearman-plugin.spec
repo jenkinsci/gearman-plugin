@@ -17,7 +17,7 @@ BuildRequires: maven
 Packaged jenkins-in-house-plugin-%{plugin_name} %{plugin_name}.hpi file
 
 %prep
-%setup -n %{name} -c 
+%setup -n %{name} -c
 
 %build
 mvn versions:set -DnewVersion=%{version}

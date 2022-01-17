@@ -19,6 +19,7 @@
 package hudson.plugins.gearman;
 
 import hudson.model.Computer;
+import hudson.model.Executor;
 import hudson.model.Node;
 import hudson.model.Run;
 import hudson.model.Queue;
@@ -282,8 +283,16 @@ public class GearmanProxy {
         return gmwtHandles.size() + gewtHandles.size();
     }
 
+    /**
+     * @throws IllegalStateException If the finalized build has no executor
+     */
     public void onBuildFinalized(Run r) {
-        Computer computer = r.getExecutor().getOwner();
+        Executor executor = r.getExecutor();
+        if (executor == null) {
+            throw new IllegalStateException("Finalizing build " + r + " has no executor");
+        }
+
+        Computer computer = executor.getOwner();
         // A build just finished, so let the AvailabilityMonitor
         // associated with its node wake up any workers who may be
         // waiting for the lock.

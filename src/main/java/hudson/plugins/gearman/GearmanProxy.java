@@ -71,17 +71,18 @@ public class GearmanProxy {
         // query Jenkins for built-in name
         try {
             builtInNode = Jenkins.get().getComputer("");
-            hostname = builtInNode.getHostName();
+            if (builtInNode != null) {
+                hostname = builtInNode.getHostName();
+            } else {
+                // Built-in node may not be enabled so get builtInName from system
+                try {
+                    hostname = java.net.InetAddress.getLocalHost().getHostName();
+                } catch (UnknownHostException e) {
+                    logger.warn("Exception while getting built-in node hostname", e);
+                }
+            }
         } catch (Exception e) {
             logger.warn("Exception while getting hostname", e);
-        }
-        // Built-in node may not be enabled so get builtInName from system
-        if (builtInNode == null) {
-            try {
-                hostname = java.net.InetAddress.getLocalHost().getHostName();
-            } catch (UnknownHostException e) {
-                logger.warn("Exception while getting hostname", e);
-            }
         }
 
         builtInName = hostname;

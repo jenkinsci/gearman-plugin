@@ -127,18 +127,21 @@ public class NodeAvailabilityMonitor implements AvailabilityMonitor {
         // Jenkins calls this from within the scheduler maintenance
         // function (while owning the queue monitor).  If we are
         // locked, only allow the build we are expecting to run.
-        logger.debug("AvailabilityMonitor canTake request for " +
-                     workerHoldingLock);
+        logger.debug("AvailabilityMonitor.canTake request for " + workerHoldingLock);
 
         NodeParametersAction param = item.getAction(NodeParametersAction.class);
         if (param != null) {
-            logger.debug("AvailabilityMonitor canTake request for UUID " +
-                         param.getUuid() + " expecting " + expectedUUID);
-
             if (expectedUUID != null &&
                 expectedUUID.equalsIgnoreCase(param.getUuid())) {
+                logger.debug("AvailabilityMonitor.canTake item matches expected UUID " + expectedUUID);
                 return true;
+            } else {
+                logger.debug("AvailabilityMonitor.canTake for UUID "
+                    + param.getUuid() + " but was expecting " + expectedUUID);
             }
+        }
+        if (workerHoldingLock != null) {
+            logger.debug("AvailabilityMonitor.canTake lock held by " + workerHoldingLock);
         }
         return (workerHoldingLock == null);
     }

@@ -31,14 +31,12 @@ import org.gearman.worker.GearmanWorker;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 
 /**
  * Test for the {@link ManagementWorkerThread} class.
  *
  * @author Khai Do
  */
-@PrepareForTest(GearmanWorker.class)
 public class ManagementWorkerThreadTest {
 
     /**

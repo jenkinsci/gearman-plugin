@@ -29,14 +29,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 
 /**
  * Test for the {@link AbstractWorkerThread} class.
  *
  * @author Khai Do
  */
-@PrepareForTest(GearmanWorker.class)
 public class AbstractWorkerThreadTest {
 
     /**

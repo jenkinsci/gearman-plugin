@@ -20,6 +20,7 @@ package hudson.plugins.gearman;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 import jenkins.model.Jenkins;
 
@@ -27,21 +28,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.MockedStatic;
 
 /**
  * Test for the {@link GearmanPluginConfig} class.
  *
  * @author Khai Do
  */
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore({"javax.xml.*"})
-@PrepareForTest(Jenkins.class)
 public class GearmanPluginConfigTest {
 
+    private MockedStatic<Jenkins> mockedJenkins;
     private GearmanPluginConfig gpc;
 
     /**
@@ -49,14 +45,17 @@ public class GearmanPluginConfigTest {
     @Before
     public void setUp() {
         Jenkins jenkins = mock(Jenkins.class);
-        PowerMockito.mockStatic(Jenkins.class);
-        when(Jenkins.get()).thenReturn(jenkins);
-        when(Jenkins.getInstance()).thenReturn(jenkins);
+
+        mockedJenkins = mockStatic(Jenkins.class);
+        mockedJenkins.when(Jenkins::get).thenReturn(jenkins);
+        mockedJenkins.when(Jenkins::getInstance).thenReturn(jenkins);
+
         gpc = new GearmanPluginConfig();
     }
 
     @After
     public void tearDown() throws Exception {
+        mockedJenkins.close();
     }
 
     @Test

@@ -24,6 +24,7 @@ import hudson.model.Run;
 import hudson.model.Queue;
 import hudson.model.queue.CauseOfBlockage;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -98,6 +99,7 @@ public class GearmanProxy {
     /*
      * This method initializes the  gearman workers.
      */
+    @SuppressFBWarnings("DCN_NULLPOINTER_EXCEPTION")
     public void initWorkers() {
         /*
          * Purpose here is to create a 1:1 mapping of 'gearman worker':'jenkins

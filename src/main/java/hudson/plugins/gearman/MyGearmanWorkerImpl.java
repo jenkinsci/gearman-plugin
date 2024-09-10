@@ -634,7 +634,8 @@ public class MyGearmanWorkerImpl implements GearmanSessionEventHandler {
             if (executorService == null) {
                 fun.call();
             } else {
-                executorService.submit(fun);
+                // The future is not used, we watch it via driveSessionIO()
+                Future task = executorService.submit(fun);
             }
 
             // We should have submitted either a WORK_EXCEPTION, COMPLETE,

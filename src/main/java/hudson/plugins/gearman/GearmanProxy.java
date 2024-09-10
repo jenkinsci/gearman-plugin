@@ -19,6 +19,7 @@
 package hudson.plugins.gearman;
 
 import hudson.model.Computer;
+import hudson.model.Executor;
 import hudson.model.Node;
 import hudson.model.Run;
 import hudson.model.Queue;
@@ -72,17 +73,18 @@ public class GearmanProxy {
         // query Jenkins for built-in name
         try {
             builtInNode = Jenkins.get().getComputer("");
-            hostname = builtInNode.getHostName();
+            if (builtInNode != null) {
+                hostname = builtInNode.getHostName();
+            } else {
+                // Built-in node may not be enabled so get builtInName from system
+                try {
+                    hostname = java.net.InetAddress.getLocalHost().getHostName();
+                } catch (UnknownHostException e) {
+                    logger.warn("Exception while getting built-in node hostname", e);
+                }
+            }
         } catch (Exception e) {
             logger.warn("Exception while getting hostname", e);
-        }
-        // Built-in node may not be enabled so get builtInName from system
-        if (builtInNode == null) {
-            try {
-                hostname = java.net.InetAddress.getLocalHost().getHostName();
-            } catch (UnknownHostException e) {
-                logger.warn("Exception while getting hostname", e);
-            }
         }
 
         builtInName = hostname;
@@ -283,8 +285,16 @@ public class GearmanProxy {
         return gmwtHandles.size() + gewtHandles.size();
     }
 
+    /**
+     * @throws IllegalStateException If the finalized build has no executor
+     */
     public void onBuildFinalized(Run r) {
-        Computer computer = r.getExecutor().getOwner();
+        Executor executor = r.getExecutor();
+        if (executor == null) {
+            throw new IllegalStateException("Finalizing build " + r + " has no executor");
+        }
+
+        Computer computer = executor.getOwner();
         // A build just finished, so let the AvailabilityMonitor
         // associated with its node wake up any workers who may be
         // waiting for the lock.

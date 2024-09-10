@@ -160,7 +160,9 @@ public abstract class AbstractWorkerThread implements Runnable {
         while (running) {
             try {
                 logger.info("---- Starting Worker "+ getName() +" ("+new Date().toString()+")");
-                worker.addServer(conn);
+                synchronized(this) {
+                    worker.addServer(conn);
+                }
                 worker.setWorkerID(name);
                 worker.setJobUniqueIdRequired(true);
                 registerJobs();

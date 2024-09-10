@@ -98,7 +98,6 @@
         <jenkins-maven-plugin>3.15</jenkins-maven-plugin>
         <slf4j-api>1.7.32</slf4j-api>
         <maven.javadoc.skip>true</maven.javadoc.skip>
-        <findbugs.failOnError>false</findbugs.failOnError>
     </properties>
 
 

@@ -26,13 +26,13 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletException;
 
 import jenkins.model.GlobalConfiguration;
 import net.sf.json.JSONObject;
 
 import org.kohsuke.stapler.QueryParameter;
-import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.StaplerRequest2;
 import org.kohsuke.stapler.DataBoundSetter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,7 +85,7 @@ public class GearmanPluginConfig extends GlobalConfiguration {
      * This method runs when user saves the configuration form
      */
     @Override
-    public boolean configure(StaplerRequest req, JSONObject json)
+    public boolean configure(StaplerRequest2 req, JSONObject json)
             throws Descriptor.FormException {
 
         // save current plugin config so we can compare to new user settings

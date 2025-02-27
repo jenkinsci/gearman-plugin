@@ -80,7 +80,7 @@ public class StartJobWorkerTest {
     }
 
     @Test
-    public void testJobStart_WorkflowJob() throws IOException, InterruptedException {
+    public void testJobStart_WorkflowJob() throws Exception {
         // setup project
         WorkflowJob project = j.createProject(WorkflowJob.class, "workflow-project");
         CpsFlowDefinition flowDefinition = new CpsFlowDefinition("echo 'this is a test'", false);
